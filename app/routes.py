@@ -1,4 +1,11 @@
+from flask import render_template, jsonify, request
+
 from app import app
+from app import db
+from app.errors import bad_request
+from app.agents import new_agent
+from app.info import get_info
+from app.processing import process_string, process_image
 
 # GET requests should only return information, making no changes
 # POST requests are used for requests which cause changes
@@ -13,20 +20,44 @@ def index():
 
 @app.route('/new', methods=['POST'])
 def new():
-    pass
+    agent = new_agent()
+    response = jsonify(agent.to_dict())
+    response.status_code = 201
+    response.headers['Location'] = url_for('get_agent', id=user.id)
+    return response
 
-@app.route('/state', methods=['GET'])
-def state(id):
-    pass
+@app.route('/agent/<int:id>', methods=['GET'])
+def get_agent(id):
+    return(User.query.get_or_404(id).to_dict())
 
-@app.route('/info', methods=['GET'])
+@app.route('/info/<string>', methods=['GET'])
 def info(string):
-    pass
+    results = get_info(string)
+    response = jsonify(results)
+    response.status_code = 201
+    return reponse
 
 @app.route('/speech', methods=['POST'])
-def speech(string):
-    pass
+def speech():
+    data = request.get_json or {}
+    if 'string' not in data:
+        return bad_request('must include string')
+    results = process_speech(data)
+    response = jsonify(results)
+    response.status_code = 201
+    return response
 
-@app.route('/image', method=['POST'])
+@app.route('/image', methods=['POST'])
 def image():
-    pass
+    data = request.get_json or {}
+    if 'image' not in data:
+        return bad_request('must include image')
+    results = process_image(data)
+    response = jsonify(results)
+    response.status_code = 201
+    return response
+
+@app.cli.command('resetdb')
+def resetdb_command():
+    db.drop_all()
+    db.create_all()

@@ -1,10 +1,13 @@
 # Managing environments
 
-To record the state of the conda environment in a yml file:
-conda env export > environment.yml
+I'm developing this using conda on my laptop, but the host site pythonanywhere
+doesn't support conda.
+Therefore, need to export an requirements.txt file from conda, then create
+the virtualenv from that.
 
-To create an environment from this:
-conda env create --prefix ./env --file environment.yml
+To record the state of the conda environment:
+conda list -e > requirements.txt 
 
-To update an environment:
-conda env update --prefix ./env --file enviornemtn.yml --prune
+To install these modules in a virtualenv:
+source .../venv/bin/activate
+(venv) pip -r requirements.txt

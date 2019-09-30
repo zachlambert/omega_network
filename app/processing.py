@@ -1,5 +1,5 @@
 
-def process_string(data):
+def process_speech(data):
     string = data['string']
     return {'result': 'not yet implemented'}
 

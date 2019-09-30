@@ -1,13 +1,14 @@
 # Managing environments
 
-I'm developing this using conda on my laptop, but the host site pythonanywhere
-doesn't support conda.
-Therefore, need to export an requirements.txt file from conda, then create
-the virtualenv from that.
+Create a virtual environment with:
+python3 -m venv env
 
-To record the state of the conda environment:
-conda list -e > requirements.txt 
+Activate the environment with:
+cource env/bin/activate
+!Note, if using conda too, make sure to deactivate it with "conda deactivate"
 
-To install these modules in a virtualenv:
-source .../venv/bin/activate
-(venv) pip -r requirements.txt
+To record the installed packages:
+pip freeze > requirements.txt
+
+To install packages from the requirements file:
+pip install -r requirements.txt

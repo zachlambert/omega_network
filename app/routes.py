@@ -6,6 +6,11 @@ from app import app
 # usage is to process something and return a response, this may in future
 # include updating information contained in the brain.
 
+@app.route('/')
+@app.route('/index')
+def index():
+    return render_template('index.html')
+
 @app.route('/new', methods=['POST'])
 def new():
     pass

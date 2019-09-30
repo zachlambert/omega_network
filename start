@@ -1,3 +1,0 @@
-export FLASK_APP=omega_network.py
-source activate ./env
-flask run

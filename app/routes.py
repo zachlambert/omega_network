@@ -41,9 +41,9 @@ def info(string):
 
 @app.route('/speech', methods=['POST'])
 def speech():
-    data = request.get_json() or {}
-    if 'string' not in data:
-        return bad_request('must include string')
+    data = request.files['file'] or None 
+    if data is None:
+        return bad_request('must include sound file')
     results = process_speech(data)
     response = jsonify(results)
     response.status_code = 201
@@ -51,8 +51,8 @@ def speech():
 
 @app.route('/image', methods=['POST'])
 def image():
-    data = request.get_json() or {}
-    if 'image' not in data:
+    data = request.files['file'] or None
+    if data is None:
         return bad_request('must include image')
     results = process_image(data)
     response = jsonify(results)
